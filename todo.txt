@@ -1,6 +1,3 @@
-abc
 dirt
 tea
-code
-comp
-bbbb
+computer

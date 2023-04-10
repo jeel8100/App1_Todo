@@ -5,15 +5,19 @@ label = sg.Text("Type in Todo list")
 input_box = sg.InputText(tooltip="Enter todo", key="todo")
 add_button = sg.Button("Add")
 list_box = sg.Listbox(values=functions.get_todos(), key="todos",
-                      enable_events=True, size=[45, 10])
+                      enable_events=True, size=[40, 9])
 edit_button = sg.Button("Edit")
-
+complete_button = sg.Button("Complete")
+exit_button = sg.Button("Exit")
 
 # window accepts the objects row by row
 
 window = sg.Window('My TO-Do App',
-                   layout=[[label], [input_box, add_button], [list_box, edit_button ]],
-                   font=('Helvetica', 15))
+                   layout=[[label],
+                           [input_box, add_button],
+                           [list_box, edit_button, complete_button],
+                           [exit_button]],
+                   font=('Helvetica', 10))
 
 while True:
     event, values = window.read()
@@ -31,6 +35,7 @@ while True:
             functions.write_todos(todos)
             # update the list box with the latest values
             window['todos'].update(values=todos)
+
         case 'todos':
             # when clicking on list box, it should update data or list
             window['todo'].update(value=values['todos'][0])
@@ -48,6 +53,18 @@ while True:
             functions.write_todos(todos)
             # update the list box
             window['todos'].update(values=todos)
+
+        case 'Complete':
+            todo_to_complete = values['todos'][0]
+            todos = functions.get_todos()
+            todos.remove(todo_to_complete)
+            functions.write_todos(todos)
+            window['todos'].update(values=todos)
+            window['todo'].update(values=' ')
+
+        case 'Exit' :
+            break
+
         case sg.WIN_CLOSED:
             break
 
